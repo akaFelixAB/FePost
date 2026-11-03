@@ -12,15 +12,18 @@ importers:
         specifier: ^15.0.0
         version: 15.0.0
       mongodb:
-        specifier: ^7.0.0
+        specifier: ^7.8.0
         version: 7.8.0
       yaml:
-        specifier: ^2.8.1
+        specifier: ^2.9.1
         version: 2.9.1
     devDependencies:
       '@types/node':
         specifier: ^26.6.6
         version: 26.6.6
+      console-table-printer:
+        specifier: ^2.16.1
+        version: 2.16.1
       prettier:
         specifier: ^3.9.10
         version: 3.9.10
@@ -170,6 +173,9 @@ packages:
     resolution: {integrity: sha512-z67u4ZhzCL/Tydu1lJARtEZYWbWaN7oYLHbsuzocr6y4N6WZAagG3RQ4FW61V1/0+jImpj293XfrcYnd1qxtPg==}
     engines: {node: '>=22.12.0'}
 
+  console-table-printer@2.16.1:
+    resolution: {integrity: sha512-Sc9FRJ4O9xKGNrvulNdPfK5SyBcZ6lcaRnDE4AQ/uw6IDtjHhsqyzzqcnMikjyGaiOOF2tNOKoBhbVjRvFy9Lw==}
+
   memory-pager@1.5.0:
     resolution: {integrity: sha512-ZS4Bp4r/Zoeq6+NLJpP+0Zzm0pR8whtGPf1XExKLJBAczGMnSi3It14OiNCStjQjM6NU1okjQGSxgEZN8eBYKg==}
 
@@ -212,6 +218,9 @@ packages:
   punycode@2.3.1:
     resolution: {integrity: sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==}
     engines: {node: '>=6'}
+
+  simple-wcswidth@1.1.2:
+    resolution: {integrity: sha512-j7piyCjAeTDSjzTSQ7DokZtMNwNlEAyxqSZeCS+CXH7fJ4jx3FuJ/mTW3mE+6JLs4VJBbcll0Kjn+KXI5t21Iw==}
 
   sparse-bitfield@3.0.3:
     resolution: {integrity: sha512-kvzhi7vqKTfkh0PZU+2D2PIllw2ymqJKujUcyPMd9Y75Nv4nPbGJZXNhxsgdQab2BmlDct1YnfQCguEvHr7VsQ==}
@@ -321,6 +330,10 @@ snapshots:
 
   commander@15.0.0: {}
 
+  console-table-printer@2.16.1:
+    dependencies:
+      simple-wcswidth: 1.1.2
+
   memory-pager@1.5.0: {}
 
   mongodb-connection-string-url@7.0.2:
@@ -337,6 +350,8 @@ snapshots:
   prettier@3.9.10: {}
 
   punycode@2.3.1: {}
+
+  simple-wcswidth@1.1.2: {}
 
   sparse-bitfield@3.0.3:
     dependencies:

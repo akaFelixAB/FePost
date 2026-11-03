@@ -1,0 +1,32 @@
+{
+  "name": "FePost",
+  "version": "1.0.0",
+  "description": "Standalone FeBlog article management CLI",
+  "private": true,
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "feblog": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "cli": "pnpm build && node dist/index.js",
+    "test": "pnpm build && node --test",
+    "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,md}\"",
+    "format-check": "prettier --check \"src/**/*.{ts,tsx,js,jsx,json,md}\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "prettier": "^3.9.10",
+    "typescript": "^7.0.2"
+  },
+  "dependencies": {
+    "commander": "^15.0.0",
+    "mongodb": "^7.0.0",
+    "yaml": "^2.8.1"
+  }
+}

@@ -6,6 +6,8 @@ import path from 'node:path';
 import { loadConfig, projectRoot, selectProfile } from './config.js';
 import { articlePath, atomicWrite, ensureWithin, validateSlug, workspaceRoot } from './files.js';
 import { listPosts, pullPost, savePost } from './posts.js';
+import { printTable, Table } from 'console-table-printer';
+import { stat } from 'node:fs';
 
 const program = new Command();
 program.name('feblog').description('FeBlog local article management CLI').version('1.0.0');
@@ -30,6 +32,7 @@ program
         await copyFile(path.join(root, 'feblog.config.example.json'), config);
         await mkdir(path.join(root, '.workspace', 'posts'), { recursive: true });
         await mkdir(path.join(root, '.workspace', 'state'), { recursive: true });
+
         console.log(
             'Created feblog.config.json and .workspace. No database connection. Please edit feblog.config.json and run again.'
         );
@@ -51,10 +54,31 @@ posts
     .action(async (options) => {
         const config = await loadConfig(program.opts().config);
         const [, profile] = selectProfile(config, program.opts().profile);
-        console.log(['slug', 'title', 'format', 'status', 'date', 'revision'].join('\t'));
-        for (const line of await listPosts(profile, options.limit, options.draft === true)) {
-            console.log(line);
-        }
+
+        const rawPosts = await listPosts(profile, options.limit, options.draft === true);
+
+        const table = new Table(['slug', 'title', 'format', 'status', 'date', 'revision']);
+
+        rawPosts.forEach((post) => {
+            const [slug, title, format, status, rawDate, revision] = post.split('\t');
+            const date: Date = new Date(rawDate?.valueOf() || 0);
+
+            let rowColor = 'red';
+
+            if (status === 'published') {
+                rowColor = 'green';
+            } else if (status === 'draft') {
+                rowColor = 'yellow';
+            }
+
+            if (date > new Date()) {
+                rowColor = 'blue';
+            }
+
+            table.addRow({ slug, title, format, status, date, revision }, { color: rowColor });
+        });
+
+        table.printTable();
     });
 posts
     .command('new <slug>')
@@ -82,17 +106,21 @@ posts
 posts.command('pull <slug>').action(async (slug) => {
     const config = await loadConfig(program.opts().config);
     const [name, profile] = selectProfile(config, program.opts().profile);
+
     console.log(await pullPost(projectRoot(), name, profile, slug));
 });
 posts.command('save <file>').action(async (file) => {
     const config = await loadConfig(program.opts().config);
     const [name, profile] = selectProfile(config, program.opts().profile);
+
     if (profile.production && !program.opts().allowProduction)
         throw new Error('production profile requires --allow-production。');
+
     const root = projectRoot();
     const absolute = path.resolve(root, file);
     const postsRoot = workspaceRoot(root, name, 'posts');
     await ensureWithin(postsRoot, absolute);
+
     console.log(
         await savePost(
             root,

@@ -1,0 +1,17 @@
+{
+  "defaultProfile": "local",
+  "profiles": {
+    "local": {
+      "uri": "mongodb://127.0.0.1:27017",
+      "database": "feblog_local",
+      "collection": "posts",
+      "production": false
+    },
+    "production": {
+      "uri": "mongodb://127.0.0.1:27018",
+      "database": "feblog",
+      "collection": "posts",
+      "production": true
+    }
+  }
+}
